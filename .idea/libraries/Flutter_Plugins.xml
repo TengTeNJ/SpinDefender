@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/vibration-3.1.4" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/device_info_plus-9.0.3" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
