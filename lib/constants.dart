@@ -136,6 +136,9 @@ class Constants {
   static Color baseStyleColor = Color.fromRGBO(248, 133, 11, 1);
   static Color baseGreyStyleColor = Color.fromRGBO(177, 177, 177, 1);
   static Color darkControllerColor = Color.fromRGBO(28, 29, 32, 1);
+
+  static Color darkDialogColor = Color.fromRGBO(45, 45, 57, 1);
+
   static Color baseControllerColor = Color.fromRGBO(41, 41, 54, 1);
   static Color grayTextColor = Color.fromRGBO(156, 156, 156, 1);
   static Color connectTextColor = Color.fromRGBO(204, 204, 204, 1);
@@ -158,6 +161,10 @@ class Constants {
   static Color actionHighBgColor = Color.fromRGBO(248, 98, 21, 1);
 
   static Color speedTextColor = Color.fromRGBO(180, 180, 180, 1.0);
+  static Color speedSliderBGColor = Color.fromRGBO(159, 159, 159, 1);
+
+  static Color addSDBGColor = Color.fromRGBO(74, 37, 5, 1.0);
+
 
 
 
@@ -166,4 +173,15 @@ class Constants {
 
   static String kTcpIPAdress = '10.10.100.254';
   static int kTcpPort = 12345;
+
+
 }
+
+// 蓝牙设置名字
+//const kBLEDevice_NewName = 'Myspeedz';
+const kBLEDevice_NewName = 'Myspeedz';
+
+// 新版本的digital shoots和270的蓝牙模块保持一致
+const kBLE_270_SERVICE_UUID = "ffe0";
+const kBLE_270_CHARACTERISTIC_NOTIFY_UUID = "ffe4";
+const kBLE_270_CHARACTERISTIC_WRITER_UUID = "2A6F";
