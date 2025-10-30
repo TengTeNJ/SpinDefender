@@ -33,7 +33,7 @@ class _RootControllerState extends State<RootController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Constants.darkThemeColor,
         style:style,

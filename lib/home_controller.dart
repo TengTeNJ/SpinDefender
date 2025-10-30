@@ -94,7 +94,7 @@ class _HomeControllerState extends State<HomeController> {
                ),
 
                Container(
-                 margin: EdgeInsets.only(left: 0,top: 48) ,
+                 margin: EdgeInsets.only(left: 0,top: 38) ,
                  child: Constants.boldWhiteTextWidget("00:20:10", 16),
                ),
                SizedBox(height: 8,),

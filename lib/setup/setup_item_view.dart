@@ -102,8 +102,6 @@ class _SetupItemViewState extends State<SetupItemView> {
                 ,width:14 ,height: 18,),
             ),
           ),
-
-
         ],
       ),
     );

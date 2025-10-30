@@ -17,15 +17,14 @@ class _SetupListViewState extends State<SetupListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        controller: _ctrl,
+        padding: EdgeInsets.zero,   // 去掉系统默认顶部 padding
         itemBuilder: (context,index){
         return GestureDetector(onTap: (){
 
         },
          child:SetupItemView(model: widget.datas[index],)
         );
-        }, separatorBuilder: (context, index) =>SizedBox(
-       height: 10,
-    ), itemCount: widget.datas.length);
+        }, separatorBuilder: (context, index) =>   SizedBox(height: 10,),
+        itemCount: widget.datas.length);
   }
 }

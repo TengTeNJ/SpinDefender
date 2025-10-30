@@ -79,6 +79,7 @@ class Constants {
   static Text boldBaseTextWidget(String text, double fontSize,
       {int maxLines = 1,
         TextAlign textAlign = TextAlign.center,
+        Color textColor = Colors.white,
         double height = 1.0}) {
     return Text(
       textAlign: textAlign,
@@ -88,7 +89,7 @@ class Constants {
           height: height,
           fontFamily: 'SanFranciscoDisplay4',
           fontWeight: FontWeight.bold,
-          color: Constants.baseStyleColor,
+          color: textColor,
           fontSize: fontSize),
     );
   }
@@ -165,7 +166,10 @@ class Constants {
 
   static Color addSDBGColor = Color.fromRGBO(74, 37, 5, 1.0);
 
+  static Color actionSwitchBGColor = Color.fromRGBO(45, 45, 57, 1.0);
+  static Color actionSwitchBGHighColor = Color.fromRGBO(248, 117, 3, 1.0);
 
+  static Color saveTextColor = Color.fromRGBO(237, 97, 21, 1.0);
 
 
   static String connectRobotText =
