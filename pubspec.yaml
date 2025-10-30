@@ -44,6 +44,7 @@ dev_dependencies:
 
   convex_bottom_bar: ^3.2.0
   percent_indicator: ^4.2.5
+  flutter_easyloading: ^3.0.5
 
 #  path: ^1.8.1
 #  sqflite: ^2.3.2
