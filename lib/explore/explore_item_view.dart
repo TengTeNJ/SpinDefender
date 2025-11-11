@@ -1,12 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:spin_defender/explore/full_screen_video.dart';
 
 import '../constants.dart';
 import '../setup/setup_model.dart';
 
 class ExploreItemView extends StatefulWidget {
   SetupModel model;
-
-
   ExploreItemView({required this.model});
 
   @override
@@ -14,60 +15,111 @@ class ExploreItemView extends StatefulWidget {
 }
 
 class _ExploreItemViewState extends State<ExploreItemView> {
+ @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+ }
+
+ @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           color: Constants.dialogBgColor,
           borderRadius: BorderRadius.circular(10)
       ),
-      height: 93,
-      child: Row(
+      height: 292,
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
-              //
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(widget.model.isConnected ? 'images/setup/battery_high_icon.png' :
-                  'images/setup/battery_icon.png',
-                      width: 96, height: 90),
-                  SizedBox(width: 2,),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Constants.boldWhiteTextWidget("Turn & Shots", 18),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(widget.model.isConnected ? 'images/setup/battery_high_icon.png' :
-                          'images/setup/battery_icon.png',
-                              width: 12, height: 15),
-                          SizedBox(width: 2,),
-
-                          Constants.regularWhiteTextWidget("1 Player 2 Pods", 14, Constants.speedTextColor),
-                        ],
-                      )
-
-                    ],
+                  Container(
+                    margin: EdgeInsets.only(top: 24,left:16 ),
+                    child:Constants.boldWhiteTextWidget("Turn & Shots", 18),
                   ),
-
-
+                  SizedBox(height: 4,),
+                  Container(
+                    margin: EdgeInsets.only(left: 16),
+                    child:Constants.regularWhiteTextWidget("00:04:30", 12, Constants.speedSliderBGColor),
+                  )
                 ],
               ),
+
+              GestureDetector(onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FullScreenVideo()),
+                );
+              },
+               child:Container(
+                 margin: EdgeInsets.only(right: 16,top: 8),
+                 child:Image.asset('images/home/right_arrow_icon.png',
+                     width: 73/3, height: 73/3),
+               ),
+              )
             ],
           ),
-          Image.asset(widget.model.isConnected ? 'images/setup/battery_high_icon.png' :
-          'images/setup/battery_icon.png',
-              width: 33, height: 33),
 
+          SizedBox(height: 6,),
+          // Container(
+          //   color: Colors.red,
+          //   margin: EdgeInsets.only(left: 16,right: 16),
+          //   child:Image.asset('images/home/thumb.jpg',
+          //       width: Constants.screenWidth(context) - 64, height: 200,
+          //       fit: BoxFit.cover,
+          //   ),
+          // ),
+          Container(                                  // 外层红色区域
+            margin: const EdgeInsets.only(left: 16, right: 16),
+            child: Stack(
+              alignment: Alignment.center,            // 居中叠加
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  // color: Colors.red,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(image: AssetImage(
+                      'images/home/thumb.jpg'),
+                      // width: double.infinity,
+                      // height: 200,
+                      fit: BoxFit.cover,
+                    ),
+
+                  ),
+
+                  // child: Image.asset(
+                  //   'images/home/thumb.jpg',
+                  //   width: double.infinity,
+                  //   height: 200,
+                  //   fit: BoxFit.cover,
+                  // ),
+                ),
+
+                // 2. 上层：你想加的内容（示例：圆角白框）
+                Container(
+                  width: 47,
+                  height: 47,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.53),
+                    // borderRadius: BorderRadius.circular(12),
+                  ),
+                  alignment: Alignment.center,
+                  child: Image.asset("images/home/stop_icon.png",width: 47,height: 47,)
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 24,),
         ],
       ),
     );

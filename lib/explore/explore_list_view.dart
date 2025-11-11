@@ -17,6 +17,8 @@ class _ExploreListViewState extends State<ExploreListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+        padding: EdgeInsets.zero,   // 去掉系统默认顶部 padding
+
         itemBuilder: (context,index){
           return ExploreItemView(model: widget.datas[index],);
         }, separatorBuilder: (context, index) =>SizedBox(
