@@ -29,7 +29,7 @@ class _SetupItemViewState extends State<SetupItemView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Constants.boldWhiteTextWidget("Spin Defender 01", 18),
+              Constants.boldWhiteTextWidget("${widget.model.title}", 18),
               SizedBox(height: 10,),
 
               // 电量
@@ -49,7 +49,6 @@ class _SetupItemViewState extends State<SetupItemView> {
               ),
             ],
           ),
-
 
           GestureDetector(onTap: (){
             TTDialog.bleListDialog(context);

@@ -24,7 +24,7 @@ class SetUpController extends StatefulWidget {
 
 class _SetUpControllerState extends State<SetUpController> {
   List<SetupModel> data = [
-    SetupModel('images/profile/setting_ball_type.png','Ball Type',true),
+    SetupModel('images/profile/setting_ball_type.png','Spin Defender 01',true),
     // SetupModel('images/profile/setting_roller_speed.png','Roller Speed',false),
     // SetupModel('images/profile/setting_reset_gap.png','Reset Gap',false),
   ];
@@ -86,7 +86,7 @@ class _SetUpControllerState extends State<SetUpController> {
                 ),
                 SizedBox(height: 12,),
                 GestureDetector(onTap: (){
-                   data.add(SetupModel("", "", false));
+                   data.add(SetupModel("", "Spin Defender 02", false));
                    setState(() {});
                 },
                 child: data.length == 3 ||  selectedMode == CurrentMode.favoriteMode ? Container() :
