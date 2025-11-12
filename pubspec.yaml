@@ -46,12 +46,22 @@ dev_dependencies:
   percent_indicator: ^4.2.5
   flutter_easyloading: ^3.0.5
 
-#  path: ^1.8.1
+  intl: ^0.18.1
+
+  video_thumbnail: ^0.5.3 # 最新稳定版
+  path_provider: ^2.1.1   # 取临时/文档目录
+#  image_gallery_saver: ^2.0.3
+
+  #  path: ^1.8.1
 #  sqflite: ^2.3.2
 #  network_info_plus: ^6.0.0
 #  permission_handler: ^11.3.0
   vibration: ^3.1.3
   device_info_plus: 9.0.3
+
+  video_player: ^2.8.1
+#  chewie: ^1.7.0
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -75,6 +85,8 @@ flutter:
   assets:
    - images/bottom/
    - images/setup/
+   - images/home/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

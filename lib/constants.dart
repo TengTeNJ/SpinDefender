@@ -47,7 +47,7 @@ class Constants {
     return Text(
       maxLines: maxLines,
       textAlign: textAlign,
-      overflow: TextOverflow.clip,
+      // overflow: TextOverflow.clip,
       text,
       style: TextStyle(
           height: height,
@@ -87,7 +87,7 @@ class Constants {
       text,
       style: TextStyle(
           height: height,
-          fontFamily: 'SanFranciscoDisplay4',
+          fontFamily: 'SanFranciscoDisplay',
           fontWeight: FontWeight.bold,
           color: textColor,
           fontSize: fontSize),
@@ -170,6 +170,11 @@ class Constants {
   static Color actionSwitchBGHighColor = Color.fromRGBO(248, 117, 3, 1.0);
 
   static Color saveTextColor = Color.fromRGBO(237, 97, 21, 1.0);
+
+  static Color circlrGreyColor = Color.fromRGBO(177, 177, 177, 1);
+  static Color ciccleYellowColor = Color.fromRGBO(251, 186, 0, 1.0);
+  static Color ciccleRedColor = Color.fromRGBO(227, 62, 62, 1.0);
+
 
 
   static String connectRobotText =

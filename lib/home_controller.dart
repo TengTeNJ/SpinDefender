@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:spin_defender/training/training_data_controller.dart';
 import 'package:spin_defender/view/set_speed_view.dart';
 import 'constants.dart';
 import 'package:vibration/vibration.dart';
-
 
 class HomeController extends StatefulWidget {
   const HomeController({super.key});
@@ -19,24 +19,6 @@ class _HomeControllerState extends State<HomeController> {
   Color startBGColor = Constants.actionBgColor;
   String stopImgPath = "";
 
-  /// A 贴左边，B 在屏幕中心
-  Widget _buildBar() {
-    return Row(
-      children: [
-        // 1. 左边控件
-        const FlutterLogo(size: 36),   // 你可以换成任何 Widget
-
-        // 2. 占空位，把中心线“推”到屏幕正中间
-        Expanded(child: Container()),  // 只负责占位，不需要可视内容
-
-        // 3. 屏幕中心控件（Row 剩余空间中心）
-        const Center(
-          child: Text('我在屏幕中间', style: TextStyle(fontSize: 18)),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,7 +32,7 @@ class _HomeControllerState extends State<HomeController> {
                  width: Constants.screenWidth(context),
                  height: 40,
                  child: Row(
-                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                   crossAxisAlignment: CrossAxisAlignment.end,
                    mainAxisAlignment: MainAxisAlignment.center,
                    children: [
                      // 1️⃣ 左侧蓝牙按钮
@@ -88,7 +70,26 @@ class _HomeControllerState extends State<HomeController> {
                        ),
                      ),
                      // 3️⃣ 右侧占位（空 Expanded 即可，权重 1）
-                     const Expanded(child: SizedBox.shrink()),
+                     // const Expanded(child: SizedBox.shrink()),
+
+                     Expanded(child: Center(
+                       child: GestureDetector(onTap: (){
+                         Navigator.push(
+                           context,
+                           MaterialPageRoute(
+                               builder: (context) => TrainingDataController()), // 参数设置页面
+                         );
+                       },
+
+                       child: Container(
+                         alignment: Alignment.centerRight,
+                         padding: EdgeInsets.only(right: 20),
+                         child: Image.asset('images/home/home_data_icon.png',
+                           width: 22,
+                           height: 22,
+                         ),
+                       ))
+                     )),
                    ],
                  ),
                ),
@@ -219,9 +220,6 @@ class _HomeControllerState extends State<HomeController> {
                        ),
                      ),
 
-
-
-
                      Column(
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: [
@@ -253,8 +251,6 @@ class _HomeControllerState extends State<HomeController> {
                          Constants.regularWhiteTextWidget("Start", 16, Constants.speedTextColor),
                        ],
                      ),
-
-
                    ],
                  ),
                )

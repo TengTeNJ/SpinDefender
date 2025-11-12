@@ -106,16 +106,23 @@ class _ExploreItemViewState extends State<ExploreItemView> {
                 ),
 
                 // 2. 上层：你想加的内容（示例：圆角白框）
-                Container(
-                  width: 47,
-                  height: 47,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.53),
-                    // borderRadius: BorderRadius.circular(12),
-                  ),
-                  alignment: Alignment.center,
-                  child: Image.asset("images/home/stop_icon.png",width: 47,height: 47,)
-                ),
+               GestureDetector(onTap: (){
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                       builder: (context) => FullScreenVideo()),
+                 );
+               },
+               child:Container(
+                   width: 47,
+                   height: 47,
+                   decoration: BoxDecoration(
+                     color: Colors.white.withOpacity(0.53),
+                   ),
+                   alignment: Alignment.center,
+                   child: Image.asset("images/home/stop_icon.png",width: 47,height: 47,)
+               ),
+               ),
               ],
             ),
           ),
