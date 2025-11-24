@@ -209,4 +209,25 @@ class BluetoothManager{
     }
   }
 
+  /*发送数据*/
+  Future<void> writerDataToDevice(BLEModel model, List<int> data) async {
+    //  数据校验
+    if (data == null || data.length == 0) {
+      return;
+    }
+    // 确认蓝牙设备已连接 并保存对应的特征值
+    if (model == null ||
+        model.hasConected == null ||
+        model.writerCharacteristic == null) {
+      return;
+    }
+    // 多个命令同时发时 增加10ms的时间间隔
+    sleep(Duration(milliseconds: 10));
+    print('999${model}');
+    // Future.delayed(Duration(milliseconds: 50),() async{
+    _ble.writeCharacteristicWithResponse(model.writerCharacteristic!,
+        value: data);
+  }
+
+
 }

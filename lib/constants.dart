@@ -185,10 +185,20 @@ class Constants {
 
 
 }
+const kDataFrameHeader = 0xA5; // 数据帧头
+const kDataFrameFoot = 0xAA;// 数据帧尾
+
+
+const kDataBaseTableName = 'ball_table'; // 数据库的表名(捡球数量)
+const kDataBaseTrainingTimeTableName = 'training_time_table'; //数据库的表名(训练时间)
+
+
+
 
 // 蓝牙设置名字
 //const kBLEDevice_NewName = 'Myspeedz';
 const kBLEDevice_NewName = 'Myspeedz';
+
 
 // 新版本的digital shoots和270的蓝牙模块保持一致
 const kBLE_270_SERVICE_UUID = "ffe0";

@@ -28,6 +28,20 @@ class _TrainingMonthDataViewState extends State<TrainingMonthDataView> {
     setState(() {});
   }
 
+  Color getColorByIndex(int index,int row) {
+    // 默认按 0、1、2 循环 黄 / 红 / 灰
+    switch (index % 3) {
+      case 0:
+        return Constants.ciccleYellowColor;
+      case 1:
+        return Constants.ciccleRedColor;
+      case 2:
+        return Constants.circlrGreyColor;
+      default:
+        return Colors.transparent;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -36,16 +50,12 @@ class _TrainingMonthDataViewState extends State<TrainingMonthDataView> {
       children: [
         Constants.boldBaseTextWidget("Days Active", 16),
         SizedBox(width: 22,),
-
-
-
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment:CrossAxisAlignment.start,
           children: [
             Constants.mediumWhiteTextWidget(("${currentMonth}."), 10 , Colors.white),
             SizedBox(height: 10,),
-
             Column(                       // 三行
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +72,7 @@ class _TrainingMonthDataViewState extends State<TrainingMonthDataView> {
                       width: 10,
                       height: 10,
                       decoration:  BoxDecoration(
-                        color: row == 2  ? Constants.ciccleYellowColor :Constants.circlrGreyColor,
+                        color: getColorByIndex(i,row),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -72,14 +82,9 @@ class _TrainingMonthDataViewState extends State<TrainingMonthDataView> {
               ),
               ),
             )
-
-
           ],
         )
-
       ],
     );
-
-
   }
 }

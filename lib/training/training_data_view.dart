@@ -30,19 +30,16 @@ class _TrainingDataViewState extends State<TrainingDataView> {
             Constants.mediumWhiteTextWidget("${widget.model.desc}", 14,
                 widget.model.titleStr == "Latest Training" ?
                Constants.speedTextColor
-               :
-               widget.model.titleStr == "Total"  ?
+               : widget.model.titleStr == "Total"  ?
                     Color.fromRGBO(91, 204, 106, 1.0)
             : Color.fromRGBO(227, 62, 62, 1.0)
             ),
             SizedBox(width: 5,),
             widget.model.titleStr == "Total" ?
             Image.asset("images/home/rise_icon.png",width: 6.23,height: 7.5,)
-            :
-            widget.model.titleStr == "Latest Training"  ?
+            : widget.model.titleStr == "Latest Training" ?
             Container() :
             Image.asset("images/home/drop_icon.png",width: 6.23,height: 7.5,)
-
           ],
         )
       ],

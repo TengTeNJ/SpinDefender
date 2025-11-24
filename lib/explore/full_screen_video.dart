@@ -180,9 +180,6 @@ class _FullScreenVideoState extends State<FullScreenVideo> {
                               ),
                             ),
                           )
-
-
-
                         )
 
 
