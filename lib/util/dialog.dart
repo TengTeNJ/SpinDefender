@@ -4,6 +4,7 @@ import 'package:spin_defender/view/set_speed_view.dart';
 
 import '../constants.dart';
 import '../view/ble_list_view.dart';
+import 'blue_tooth_manager.dart';
 import 'color.dart';
 import 'package:vibration/vibration.dart';
 
@@ -80,6 +81,9 @@ class setSpinDefenderParameterDialogState extends State<setSpinDefenderParameter
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(onTap: (){
+
+
+
                   Vibration.vibrate(duration: 200);
                   rotationBGColor = Constants.actionHighBgColor;
                   rorationImgPath = "images/bottom/icon_rotation_white.png";
@@ -176,10 +180,16 @@ class _BLEListDialogState extends State<BLEListDialog> {
                 ),
               )),
           Positioned(
-            child: BleListView(),
             top: 45,
             bottom: 99,
+            child: ValueListenableBuilder(
+              valueListenable: BluetoothManager().deviceListVersion,
+              builder: (context, _, __) {
+                return BleListView();
+              },
+            ),
           ),
+
           Positioned(
             child: GestureDetector(
               onTap: () {

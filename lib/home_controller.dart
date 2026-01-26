@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:spin_defender/models/ble_model.dart';
 import 'package:spin_defender/training/training_data_controller.dart';
+import 'package:spin_defender/util/ble_send_data.dart';
+import 'package:spin_defender/util/blue_tooth_manager.dart';
 import 'package:spin_defender/view/set_speed_view.dart';
 import 'constants.dart';
 import 'package:vibration/vibration.dart';
@@ -18,6 +21,9 @@ class _HomeControllerState extends State<HomeController> {
   String startImgPath = "images/bottom/icon_start.png";
   Color startBGColor = Constants.actionBgColor;
   String stopImgPath = "";
+
+  bool _startFlag = true;
+  int _speed = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -230,9 +236,18 @@ class _HomeControllerState extends State<HomeController> {
                            Future.delayed(Duration(milliseconds: 500), () {
                              startBGColor = Constants.actionBgColor;
                              startImgPath = "images/bottom/icon_start.png";
-                             setState(() {});
+                             setState(() {
+
+                             });
                            });
                            setState(() {});
+                           BLEModel model = BluetoothManager().hasConnectedDeviceList[0];
+                           if(_startFlag){
+                             BluetoothManager().writerDataToDevice(model, buildFrame(cmd: SpinDefenderCmd.start.value));
+                           }else{
+                             BluetoothManager().writerDataToDevice(model, buildFrame(cmd: SpinDefenderCmd.stop.value));
+                           }
+                           _startFlag = !_startFlag;
                          },
                            child:Container(
                              width: 80,

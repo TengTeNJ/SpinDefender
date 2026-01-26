@@ -10,7 +10,7 @@ class BleSendUtil {
     if (BluetoothManager().hasConnectedDeviceList.isEmpty) {
       return;
     }
-    BluetoothManager().writerDataToDevice(getWriterDevice(), setSpeedData(speed));
+   // BluetoothManager().writerDataToDevice(getWriterDevice(), setSpeedData(speed));
   }
 
   // 设置Sd 设备的旋转反向
@@ -18,7 +18,7 @@ class BleSendUtil {
     if (BluetoothManager().hasConnectedDeviceList.isEmpty) {
       return;
     }
-    BluetoothManager().writerDataToDevice(getWriterDevice(), setRotationData(rotation));
+    //BluetoothManager().writerDataToDevice(getWriterDevice(), setRotationData(rotation));
   }
 
   static BLEModel getWriterDevice() {

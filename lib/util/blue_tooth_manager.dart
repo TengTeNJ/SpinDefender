@@ -19,6 +19,12 @@ class BluetoothManager{
 
   final _ble = FlutterReactiveBle();
 
+  /// 最多支持 3 台 Spin Defender
+  static const int maxConnectedCount = 3;
+
+  /// 已连接设备 Map（deviceId -> model）
+  final Map<String, BLEModel> connectedDeviceMap = {};
+
   // 蓝牙列表
   List<BLEModel> deviceList = [];
 
@@ -33,6 +39,12 @@ class BluetoothManager{
     print("扫描到的蓝牙设备${virtualList}");
     return virtualList;
   }
+
+  // 已连接设备列表
+  List<BLEModel> get connectedDevices {
+    return connectedDeviceMap.values.toList();
+  }
+
 
   // 已连接的蓝牙设备列表
   List<BLEModel>  get hasConnectedDeviceList  {
@@ -53,6 +65,10 @@ class BluetoothManager{
   Function(int measuredSpeed)? dataChange; // 测量到速度变化
   Function()? disConnect; // 机器人断链
 
+  /// 蓝牙设备列表版本号（任意设备状态变化 +1）
+  final ValueNotifier<int> deviceListVersion = ValueNotifier(0);
+
+
   /*开始扫描*/
   Future<void> startNewScan() async {
     // 不能重复扫描
@@ -69,8 +85,10 @@ class BluetoothManager{
       if (event.name.isEmpty) {
         return;
       }
-      // print('蓝牙名字${event.name}');
-
+      if(!event.name.contains(kBLEDevice_NewName)){
+        // 蓝牙名称过滤
+        return;
+      }
       //  && event.name == kBLEDevice_NewName
       if (!hasDevice(event.id) ) {
         print('蓝牙名字${event.name}');
@@ -89,12 +107,11 @@ class BluetoothManager{
 
   /*连接设备*/
   conectToDevice(BLEModel model) {
-    if (model.hasConected == true || conectedDeviceCount.value > 0) {
-      // 已连接状态直接返回
-      print("已经连接设备了");
+    if (model.hasConected == true ||
+        connectedDeviceMap.length >= maxConnectedCount) {
+      print('已达到最大连接数量');
       return;
     }
-    // EasyLoading.show(status: "connecting...",maskType:EasyLoadingMaskType.clear);
 
     StreamSubscription<ConnectionStateUpdate> stream =  _ble
         .connectToDevice(
@@ -107,28 +124,41 @@ class BluetoothManager{
         // BLESendUtil.heartBeatResponse();
         if(Platform.isAndroid){
           // 请求高优先级连接
-          _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
+        //  _ble.requestConnectionPriority(deviceId: model.device!.id, priority: ConnectionPriority.highPerformance);
         }
         // 连接设备数量+1
         conectedDeviceCount.value++;
         // 已连接
         model.hasConected = true;
+
+        /// ⭐⭐⭐ 核心：加入已连接设备池
+        connectedDeviceMap[model.device.id] = model;
+
+        deviceListVersion.value++;
+
+
         // 保存读写特征值
         late final notifyCharacteristic;
-        if(model.device.name == kBLEDevice_NewName){
+        late final writerCharacteristic;
+        // if(model.device.name == kBLEDevice_NewName){
           // seeker bot
           notifyCharacteristic = QualifiedCharacteristic(
               serviceId: Uuid.parse(kBLE_270_SERVICE_UUID),
               characteristicId: Uuid.parse(kBLE_270_CHARACTERISTIC_NOTIFY_UUID),
               deviceId: model.device.id);
+        writerCharacteristic = QualifiedCharacteristic(
+            serviceId: Uuid.parse(kBLE_270_SERVICE_UUID),
+            characteristicId: Uuid.parse(kBLE_270_CHARACTERISTIC_WRITER_UUID),
+            deviceId: model.device.id);
           model.notifyCharacteristic = notifyCharacteristic;
-        }
+model.writerCharacteristic = writerCharacteristic;
+          Future.delayed(Duration(milliseconds: 2000),(){
+            //writerDataToDevice(model, startData());
+          });
+       // }
 
 
-        // 连接成功弹窗
-        // EasyLoading.showSuccess('Bluetooth connection successful');
-        // EasyLoading.dismiss();
-        // EventBus().sendEvent(kConnectSuccess);
+
 
         // 监听数据
         // Future.delayed(Duration(milliseconds: 2000),(){
@@ -140,38 +170,42 @@ class BluetoothManager{
         // });
       } else if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.disconnected) {
-        // EasyLoading.showError('disconected',duration: Duration(milliseconds: 5000));
-
 
         BluetoothManager().disConnect?.call();
-        if(conectedDeviceCount.value > 0){
+        connectedDeviceMap.remove(model.device.id);
+
+        if (conectedDeviceCount.value > 0) {
           conectedDeviceCount.value--;
         }
-        // 失去连接
         model.hasConected = false;
-        this.deviceList.remove(model);
-        deviceListLength.value = this.deviceList.length;
+        deviceList.remove(model);
+        deviceListLength.value = deviceList.length;
+
+        deviceListVersion.value++;
+
       }
     });
     model.bleStream = stream;
   }
 
-  /*断开连接 */
+  /*断开连接*/
   disconnectDevice(BLEModel model) {
     model.bleStream?.cancel();
-    // EasyLoading.showToast('Disconnected');
+
+    connectedDeviceMap.remove(model.device.id);
+
     if (conectedDeviceCount.value > 0) {
       conectedDeviceCount.value--;
       if (conectedDeviceCount.value == 0) {
-        // 所有设备断开
-        _instance._bleListen?.cancel();
-        _instance._bleListen = null;
-        _instance._scanStream = null;
+        _bleListen?.cancel();
+        _bleListen = null;
+        _scanStream = null;
       }
     }
+
     model.hasConected = false;
-    // EventBus().sendEvent(kInitiativeDisconnectFive);
   }
+
 
   /*判断是否已经被添加设备列表*/
   bool hasDevice(String id) {
@@ -228,6 +262,32 @@ class BluetoothManager{
     _ble.writeCharacteristicWithResponse(model.writerCharacteristic!,
         value: data);
   }
+
+  /*
+  * 给某设备发送数据
+  * 示例如下：
+  * sendToDevice(deviceIdA, setSpeedData(60));
+   sendToDevice(deviceIdB, setSpeedData(40));
+   sendToDevice(deviceIdC, stopData());
+  * */
+  Future<void> sendToDevice(
+      String deviceId,
+      List<int> data,
+      ) async {
+    final model = connectedDeviceMap[deviceId];
+    if (model == null) return;
+    await writerDataToDevice(model, data);
+  }
+
+  /*
+  * 广播给所有已连接 Spin Defender
+  * */
+  Future<void> sendToAll(List<int> data) async {
+    for (final model in connectedDeviceMap.values) {
+      await writerDataToDevice(model, data);
+    }
+  }
+
 
 
 }
