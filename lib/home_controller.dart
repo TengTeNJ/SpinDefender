@@ -7,6 +7,8 @@ import 'package:spin_defender/view/set_speed_view.dart';
 import 'constants.dart';
 import 'package:vibration/vibration.dart';
 
+import 'models/device_status.dart';
+
 class HomeController extends StatefulWidget {
   const HomeController({super.key});
 
@@ -23,7 +25,27 @@ class _HomeControllerState extends State<HomeController> {
   String stopImgPath = "";
 
   bool _startFlag = true;
+  bool _forward = true;
+
   int _speed = 20;
+  DeviceStatus? _status;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // 注册回调
+    _status = BluetoothManager().deviceStatus;
+
+    BluetoothManager().onStatusUpdate = (status) {
+      if (!mounted) return;
+      print("---${status?.motorSpeed}");
+      setState(() {
+        _status = status;
+      });
+    };
+    BluetoothManager().sendDataToSimpleDevice(buildFrame(cmd: SpinDefenderCmd.requestStatus.value),);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +171,7 @@ class _HomeControllerState extends State<HomeController> {
                              // crossAxisAlignment: CrossAxisAlignment.baseline,
                              children: [
                                Text(
-                                 "${87}",
+                                 "${_status?.battery}",
                                  style: TextStyle(
                                      fontWeight: FontWeight.bold,
                                      fontSize: 64,
@@ -181,11 +203,16 @@ class _HomeControllerState extends State<HomeController> {
                Container(
                  width: 300,
                  height: 40,
-                 child: SetSpeedView(),
+                 child: SetSpeedView(
+                   onSpeedChanged: (int speed) {
+                     print("当前速度：$speed");
+                     BluetoothManager().sendDataToSimpleDevice(buildFrame(cmd: SpinDefenderCmd.setSpeed.value,data: speed),);
+                     },
+                 ),
                ),
 
                Center(
-                 child:Constants.regularWhiteTextWidget("Speed", 16, Constants.speedTextColor),
+                 child:Constants.regularWhiteTextWidget("${_status?.motorSpeed.value}", 16, Constants.speedTextColor),
                ),
                SizedBox(height: 40,),
 
@@ -205,6 +232,12 @@ class _HomeControllerState extends State<HomeController> {
                          setState(() {});
                        });
                        setState(() {});
+                       if(_forward){
+                         BluetoothManager().sendDataToSimpleDevice(buildFrame(cmd: SpinDefenderCmd.forward.value));
+                       }else{
+                         BluetoothManager().sendDataToSimpleDevice(buildFrame(cmd: SpinDefenderCmd.reverse.value));
+                       }
+                       _forward = !_forward;
                      },
                        child: Column(
                          mainAxisAlignment: MainAxisAlignment.center,
